@@ -28,9 +28,41 @@ const JobDetails = () => {
   const { data, isLoading, error, refetch } = useFetch("job-details", {
     job_id: params.id,
   });
+  const tabs = ["About", "Qualifications", "Responsibilities"];
 
   const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {};
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch();
+    setRefreshing(false);
+  }, []);
+
+  const displayTabContent = () => {
+    switch (activeTab) {
+      case "Qualifications":
+        return (
+          <Specifics
+            title="Qualifications"
+            points={data[0].job_highlights?.Qualifications ?? ["N/A"]}
+          />
+        );
+      case "About":
+        return (
+          <JobAbout info={data[0].job_description ?? "No Data provided"} />
+        );
+      case "Responsibilities":
+        return (
+          <Specifics
+            title="Responsibilities"
+            points={data[0].job_highlights?.Responsibilities ?? ["N/A"]}
+          />
+        );
+      default:
+        break;
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
@@ -69,12 +101,28 @@ const JobDetails = () => {
             <Text>No Data</Text>
           ) : (
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
-              <Company />
+              <Company
+                companyLogo={data[0].employer_logo}
+                jobTitle={data[0].job_title}
+                companyName={data[0].employer_name}
+                location={data[0].job_country}
+              />
 
-              <JobTabs />
+              <JobTabs
+                tabs={tabs}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+
+              {displayTabContent()}
             </View>
           )}
         </ScrollView>
+        <JobFooter
+          url={
+            data[0]?.job_google_link ?? "https://careers.google.com/jobs/result"
+          }
+        />
       </>
     </SafeAreaView>
   );
