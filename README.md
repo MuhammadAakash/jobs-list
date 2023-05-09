@@ -1,5 +1,11 @@
-## React Native App which is used to get the List of Available jobs for Programmers.
+### Jobs List App
 
-Welcome Page Design of the App.
+This app is creatded in React native using expo. App shows the list of available jobs in US.
 
-![Welcome Page of App](https://user-images.githubusercontent.com/64223049/236855274-2637d407-83f0-4998-9b11-ecadab8b1c1f.png)
+**What a user can perform in the App**
+
+- Search jobs
+- View Job details
+- Apply for the Job
+
+For a complete walkthrough of the app (https://youtu.be/ShglRsxh3JU)
